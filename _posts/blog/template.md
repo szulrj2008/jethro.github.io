@@ -9,4 +9,4 @@ category: blog
 
 
 
-[Jethro]:    http://blog.nigie1989.tk  "Jethro"
+[BeiYuu]:    http://blog.nigie1989.tk  "Jethro"
