@@ -1,1 +1,11 @@
-　baseurl: /jekyll_demo
+auto: true
+
+markdown: rdiscount
+pygments: true
+paginate: 8
+permalink: /:title
+
+title: blog.nigie1989.tk
+url: http://blog.nigie1989.tk
+feed: /atom.xml
+author_info: <a href="http://blog.nigie1989.tk/">Jethro</a>
