@@ -9,4 +9,4 @@ category: blog
 
 
 
-[BeiYuu]:    http://beiyuu.com  "BeiYuu"
+[BeiYuu]:    http://blog.nigie1989.tk  "Jethro"
