@@ -267,15 +267,16 @@ perl脚本代码如下：
 ================================================================
 （因为svnsync要改这个库的属性，也就是要将源库的属性备份到这个库，所以要启用这个脚本）:
 
-  cd SMP/hooks; 
-  cp pre-revprop-change.tmpl pre-revprop-change;
-  chmod 755 pre-revprop-change;
-  vi pre-revprop-change;
+     cd SMP/hooks; 
+     cp pre-revprop-change.tmpl pre-revprop-change;
+     chmod 755 pre-revprop-change;
+     vi pre-revprop-change;
+
 将该脚本后面的三句注释掉，或者干脆将它弄成一个空文件
 
 3）初始化，此时还没有备份任何数据：
 =====================================
-svnsync init file:///home/backup/svn/svnsync/Project1/  http://svntest.subversion.com/repos/Project1
+     svnsync init file:///home/backup/svn/svnsync/Project1/  http://svntest.subversion.com/repos/Project1
 =============================================
 语法是：svnsync init {你刚创建的库url} {源库url} 
 =========================================
@@ -283,7 +284,7 @@ svnsync init file:///home/backup/svn/svnsync/Project1/  http://svntest.subversio
 
 4）开始备份（同步）：
 ======================================================
-	svnsync sync file:///home/backup/svn/svnsync/Project1
+     svnsync sync file:///home/backup/svn/svnsync/Project1
 
 5）建立同步脚本 
 =========================================================================
