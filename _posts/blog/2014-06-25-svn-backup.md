@@ -8,7 +8,9 @@ category: blog
 svn备份一般采用三种方式：
 
 1）svnadmin dump
+
 2)svnadmin hotcopy
+
 3)svnsync
 
 注意：svn备份不宜采用普通的文件拷贝方式（除非你备份的时候将库暂停），如copy命令、rsync命令。 
