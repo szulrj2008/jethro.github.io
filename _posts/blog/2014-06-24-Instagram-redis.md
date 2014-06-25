@@ -5,7 +5,7 @@ description: 优化无止境，只要肯琢磨。
 category: blog
 ---
 
-[Instagram]可以说是网拍App的始祖级应用，也是当前最火热的拍照App之一，Instagram的照片数量已经达到3亿，
+[Instagram][]可以说是网拍App的始祖级应用，也是当前最火热的拍照App之一，Instagram的照片数量已经达到3亿，
 而在Instagram里，我们需要知道每一张照片的作者是谁，下面就是Instagram团队如何使用Redis来解决这个问题
 并进行内存优化的。
 
@@ -27,4 +27,4 @@ Instagram的开发者首先否定了数据库存储的方案，他们保持了KI
     >939
 
 [Jethro]:    http://blog.nigie1989.tk  "Jethro"
-[Instagram]: http://instagram.com/
+[Instagram]: http://instagram.com/  "Instagram"
