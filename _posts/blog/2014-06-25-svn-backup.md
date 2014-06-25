@@ -39,11 +39,12 @@ category: blog
 1）定义备份策略： 
 备份频度：每周六进行一次全量备份，每周日到周五进行增量备份 
 备份地点：备份存储路径到/home/backup/svn/ 
-备份命名：全量备份文件名为：weekly_fully_backup.yymmdd,增量备份文件命名为：daily-incremental-backup.yymmdd 
+备份命名：全量备份文件名为：`weekly_fully_backup.yymmdd`,增量备份文件命名为：`daily-incremental-backup.yymmdd`
 备份时间：每晚21点开始 
-备份检查：每月末进行svnadmin load恢复试验。 
-    2）建立全量备份脚本： 
-在~/下建立一个perl脚本文件，名为weekly_backup.pl，执行全量备份，并压缩备份文件，代码如下(本代码只针对一个库的备份，如果是多个库请做相应改动)： 
+备份检查：每月末进行svnadmin load恢复试验。
+
+2）建立全量备份脚本： 
+在~/下建立一个perl脚本文件，名为`weekly_backup.pl`，执行全量备份，并压缩备份文件，代码如下(本代码只针对一个库的备份，如果是多个库请做相应改动)： 
      
 	#!/usr/bin/perl -w 
 	my $svn_repos="/home/svn/repos/project1"; 
@@ -63,8 +64,8 @@ category: blog
 	print "Compressing dump file...n"; 
 	print `gzip -g $backup_dir/$next_backup_file`; 
 
-  3）建立增量备份脚本： 
-    在全量备份的基础上，进行增量备份：在~/下建立一个perl脚本文件，名为：daily_backup.pl，代码如下： 
+3) 建立增量备份脚本： 
+    在全量备份的基础上，进行增量备份：在~/下建立一个perl脚本文件，名为：`daily_backup.pl`，代码如下： 
 
 	#!/usr/bin/perl -w 
 	my $svn_repos="/home/svn/repos/project1"; 
@@ -94,12 +95,13 @@ category: blog
 	print "Compressing dump file...n"; 
 	print `gzip -g $backup_dir/$next_backup_file`; 
 	   
-4）配置/etc/crontab文件 
+4）配置/etc/crontab文件
+
 配置 /etc/crontab 文件，指定每周六执行weekly_backup.pl，指定周一到周五执行daily_backup.pl; 
 具体步骤俺就不啰嗦了. 
    
 5）备份恢复检查 
-在月底恢复检查中或者在灾难来临时，请按照如下步骤进行恢复：恢复顺序从低版本逐个恢复到高版本；即，先恢复最近的一次完整备份 weekly_full_backup.071201（举例），然后恢复紧挨着这个文件的增量备份 daily_incremental_backup.071202，再恢复后一天的备份071203，依次类推。如下： 
+在月底恢复检查中或者在灾难来临时，请按照如下步骤进行恢复：恢复顺序从低版本逐个恢复到高版本；即，先恢复最近的一次完整备份:`weekly_full_backup.071201`（举例），然后恢复紧挨着这个文件的增量备份 `daily_incremental_backup.071202`，再恢复后一天的备份071203，依次类推。如下： 
 
 	user1>mkdir newrepos 
 	user1>svnadmin create newrepos 
@@ -108,26 +110,30 @@ category: blog
 	user1>svnadmin load newrepos < daily_incremental_backup.071203 
 	.... 
 
-如果备份时采用了gzip进行压缩，恢复时可将解压缩和恢复命令合并，简单写成： 
+如果备份时采用了gzip进行压缩，恢复时可将解压缩和恢复命令合并，简单写成：
+
 	user1>zcat weekly_full_backup.071201 | svnadmin load newrepos 
 	user1>zcat daily_incremental_backup.071202 | svnadmin load newrepos 
 	... 
 
-(这部分内容很多参考了《版本控制之道》) 
+(这部分内容很多参考了`《版本控制之道》`) 
      
 
 ###2、svnadmin hotcopy整库拷贝方式 
 ------------------------- 
-svnadmin hotcopy是将整个库都“热”拷贝一份出来，包括库的钩子脚本、配置文件等；任何时候运行这个脚本都得到一个版本库的安全拷贝，不管是否有其他进程正在使用版本库。 
-因此这是俺青睐的备份方式。 
+svnadmin hotcopy是将整个库都“热”拷贝一份出来，包括库的钩子脚本、配置文件等；任何时候运行这个脚本都得到一个版本库的安全拷贝，不管是否有其他进程正在使用版本库。  
 
 1）定义备份策略 
 
-||备份频度：每天进行一次全量备份， 
-||备份地点：备份目录以日期命名，备份路径到 /home/backup/svn/${mmdd} 
-||备份保留时期：保留10天到15天，超过15天的进行删除。 
-||备份时间：每晚21点开始 
-||备份检查：备份完毕后自动运行检查脚本、自动发送报告。 
+备份频度：每天进行一次全量备份;
+=============================================
+备份地点：备份目录以日期命名，备份路径到 /home/backup/svn/${mmdd};
+======
+备份保留时期：保留10天到15天，超过15天的进行删除;
+======
+备份时间：每晚21点开始;
+==========
+备份检查：备份完毕后自动运行检查脚本、自动发送报告。
 
 2）建立备份脚本 
 在自己home目录 ~/下创建一个文件，backup.sh： 
