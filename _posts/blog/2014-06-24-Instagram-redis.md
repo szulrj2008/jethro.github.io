@@ -22,9 +22,9 @@ Instagram的开发者首先否定了数据库存储的方案，他们保持了KI
 于是他们选择了Redis，Redis是一个支持持久化的内存数据库，所有的数据都被存储在内存中（忘掉VM吧），而
 最简单的实现就是使用Redis的String结构来做一个key-value存储就行了。像这样：
 
-     SET     media:1155315 939     
-     GET     media:1155315
-     > 939
+    SET     media:1155315 939     
+    GET     media:1155315
+    >939
 
 [Jethro]:    http://blog.nigie1989.tk  "Jethro"
 [Instagram]: http://instagram.com/
