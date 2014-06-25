@@ -278,7 +278,7 @@ perl脚本代码如下：
 =====================================
      svnsync init file:///home/backup/svn/svnsync/Project1/  http://svntest.subversion.com/repos/Project1
 =============================================
-语法是：svnsync init {你刚创建的库url} {源库url} 
+语法是：`svnsync init {你刚创建的库url} {源库url}`
 =========================================
 注意本地url是三个斜杠的：/// 
 
