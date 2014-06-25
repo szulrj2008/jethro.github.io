@@ -6,11 +6,12 @@ category: blog
 ---
 
 svn备份一般采用三种方式：
-1）svnadmin dump 
-2)svnadmin hotcopy 
-3)svnsync. 
 
-注意，svn备份不宜采用普通的文件拷贝方式（除非你备份的时候将库暂停），如copy命令、rsync命令。 
+1）svnadmin dump
+2)svnadmin hotcopy
+3)svnsync
+
+注意：svn备份不宜采用普通的文件拷贝方式（除非你备份的时候将库暂停），如copy命令、rsync命令。 
 笔者曾经用 rsync命令来做增量和全量备份，在季度备份检查审计中，发现备份出来的库大部分都不可用，因此最好是用svn本身提供的功能来进行备份。 
 
 ##优缺点分析： 
@@ -30,7 +31,7 @@ svn备份一般采用三种方式：
 ==================================================================================
 
 ###1、svnadmin dump备份工具 
------------------------- 
+---------------------------------------------
 这是subversion官方推荐的备份方式。 
 
 1）定义备份策略： 
@@ -246,22 +247,25 @@ perl脚本代码如下：
 ----------------------- 
 参阅：http://www.scmbbs.com/cn/svntp/2007/11/svntp4.php 
 使用svnsync备份很简单，步骤如下： 
-1）在备份机上创建一个空库：svnadmin create Project1 
-2）更改该库的钩子脚本pre-revprop-change（因为svnsync要改这个库的属性，也就是要将源库的属性备份到这个库，所以要启用这个脚本）:   
+1）在备份机上创建一个空库：svnadmin create Project1
+2）更改该库的钩子脚本pre-revprop-change（因为svnsync要改这个库的属性，也就是要将源库的属性备份到这个库，所以要启用这个脚本）:
   cd SMP/hooks; 
-  cp pre-revprop-change.tmpl pre-revprop-change; 
-  chmod 755 pre-revprop-change; 
-  vi pre-revprop-change; 
-  将该脚本后面的三句注释掉，或者干脆将它弄成一个空文件。 
+  cp pre-revprop-change.tmpl pre-revprop-change;
+  chmod 755 pre-revprop-change;
+  vi pre-revprop-change;
+将该脚本后面的三句注释掉，或者干脆将它弄成一个空文件
+
 3）初始化，此时还没有备份任何数据： 
-svnsync init file:///home/backup/svn/svnsync/Project1/  http://svntest.subversion.com/repos/Project1 
+svnsync init file:///home/backup/svn/svnsync/Project1/  http://svntest.subversion.com/repos/Project1
   语法是：svnsync init {你刚创建的库url} {源库url} 
   注意本地url是三个斜杠的：/// 
-4）开始备份（同步）： 
-  svnsync sync file:///home/backup/svn/svnsync/Project1 
+
+4）开始备份（同步）：
+  svnsync sync file:///home/backup/svn/svnsync/Project1
+
 5）建立同步脚本 
   备份完毕后，建立钩子脚本进行同步。在源库/hooks/下建立/修改post-commit脚本，在其中增加一行，内容如下： 
-	/usr/bin/svnsync sync  --non-interactive file:///home/backup/svn/svnsync/Project1 
+	/usr/bin/svnsync sync  --non-interactive file:///home/backup/svn/svnsync/Project1
 
 你可能已经注意到上面的备份似乎都是本地备份，不是异地备份。实际上，我是通过将远程的备份机mount
 （请参阅mount命令）到svn服务器上来实现的，逻辑上看起来是本地备份，物理上实际是异地备份。
