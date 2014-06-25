@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Redis 大内存优化
-description: 优化无止境，只要肯琢磨。
+description: 记录一次我们公司redis的优化过程
 category: blog
 ---
 
@@ -16,21 +16,17 @@ category: blog
 	keyspace_hits:2580207188
 	db0:keys=2706740,expires=1440700
 
-目前我们只使用了1个DB 但是key 太多了 有270W个key,已经过期的有144W。第一个想到的就是我勒个去,怎么会有这么多key ,第二个想法就是可能存在过大的key
+目前我们只使用了1个DB 但是key 太多了 有270W个key,已经过期的有144W。第一个想到的就是我勒个去,怎么会有这么多key ,第二个想法就是可能存在过大的key。
 
 看看能不能针对过大的key 做优化？可是遗憾的是官方并没有命令显示db 的key 大小，我们只能自己想办法了
 
-Google 一番，发现国外友人已经写好了shell
+Google 一番，发现国外友人已经写好了shell----[传送门][1]
 
-传送门: https://gist.github.com/epicserve/5699837
-
-可以列出每个key 大小了。可是这并不适用我们，因为我们key 太大了 执行了9个小时都没跑完，无力吐槽了。 其实还有一个选择就是用另外一个工具
-
-传送门:https://github.com/sripathikrishnan/redis-rdb-tools
+可以列出每个key 大小了。可是这并不适用我们，因为我们key 太大了 执行了9个小时都没跑完，无力吐槽了。 其实还有一个选择就是用另外一个[工具]:[2]
 
 可惜这个太重了 ，不想麻烦ops ，我们就只能撩起袖子，造轮子。
 
-把shell 代码简单看了下发件DEBUG OBJECT 是个好东西啊 ，google 下发现官网 http://redis.io/commands/object
+把shell 代码简单看了下发件DEBUG OBJECT 是个好东西啊 ，google 下发现[官网]:[3]
 
 已经有简单的调试信息了，剩下的就好处理了
 
@@ -101,5 +97,7 @@ Google 一番，发现国外友人已经写好了shell
  
 
 From：http://www.cnblogs.com/trigged/p/3240774.html
-
 [Redis]:  http://redis.io  "Redis"
+[1]:  https://gist.github.com/epicserve/5699837
+[2]:  https://github.com/sripathikrishnan/redis-rdb-tools
+[3]:  http://redis.io/commands/object
