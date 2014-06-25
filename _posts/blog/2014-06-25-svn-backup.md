@@ -7,7 +7,7 @@ category: blog
 
 svn备份一般采用三种方式：
 
-1） svnadmin dump
+1) svnadmin dump
 ==================
 2)  svnadmin hotcopy
 ====================
