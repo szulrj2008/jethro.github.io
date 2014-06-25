@@ -124,7 +124,7 @@ category: blog
 svnadmin hotcopy是将整个库都“热”拷贝一份出来，包括库的钩子脚本、配置文件等；任何时候运行这个脚本都得到一个版本库的安全拷贝，不管是否有其他进程正在使用版本库。  
 
 1）定义备份策略 
-
+===============================
 备份频度：每天进行一次全量备份;
 =============================================
 备份地点：备份目录以日期命名，备份路径到 /home/backup/svn/${mmdd};
@@ -136,6 +136,7 @@ svnadmin hotcopy是将整个库都“热”拷贝一份出来，包括库的钩�
 备份检查：备份完毕后自动运行检查脚本、自动发送报告。
 
 2）建立备份脚本 
+======
 在自己home目录 ~/下创建一个文件，backup.sh： 
 
 	#!/bin/bash 
@@ -156,7 +157,8 @@ svnadmin hotcopy是将整个库都“热”拷贝一份出来，包括库的钩�
 	perl /home/backup/svn/deletDir.pl  #运行删除脚本，对过期备份进行删除。 
 
 3）建立检查脚本 
-  在上面指定的地方/home/backup/svn/下建立一个perl脚本：backup_check.pl 
+==================
+在上面指定的地方/home/backup/svn/下建立一个perl脚本：backup_check.pl 
 备份完整性检查的思路是：对备份的库运行 svnlook youngest，如果能正确打印出最新的版本号，则表明备份文件没有缺失；如果运行报错，则说明备份不完整。我试过如果备份中断，则运行svnlook youngest会出错。 
 
 perl脚本代码如下： 
@@ -242,13 +244,14 @@ perl脚本代码如下：
 
    
 4)定义删除脚本 
-
+=========
 由于是全量备份，所以备份不宜保留太多，只需要保留最近10来天的即可，对于超过15天历史的备份基本可以删除了。 
-在/home/backup/svn/下建立一个perl脚本：deletDir.pl 
+在/home/backup/svn/下建立一个perl脚本：`deletDir.pl` 
 (注意，删除svn备份库可不像删除普通文件那么简单） 
 脚本代码请参看我的另一个帖子：http://www.scmbbs.com/cn/systp/2007/12/systp6.php 
 
-5）修改/etc/crontab 文件 
+5）修改/etc/crontab 文件
+===============================
 在该文件中指定每晚21点执行“backup.sh”脚本。 
 
 ###3、svnsync备份 
@@ -263,19 +266,26 @@ perl脚本代码如下：
   vi pre-revprop-change;
 将该脚本后面的三句注释掉，或者干脆将它弄成一个空文件
 
-3）初始化，此时还没有备份任何数据： 
+3）初始化，此时还没有备份任何数据：
+=====================================
 svnsync init file:///home/backup/svn/svnsync/Project1/  http://svntest.subversion.com/repos/Project1
-  语法是：svnsync init {你刚创建的库url} {源库url} 
-  注意本地url是三个斜杠的：/// 
+=============================================
+语法是：svnsync init {你刚创建的库url} {源库url} 
+=========================================
+注意本地url是三个斜杠的：/// 
 
 4）开始备份（同步）：
-  svnsync sync file:///home/backup/svn/svnsync/Project1
+======================================================
+	svnsync sync file:///home/backup/svn/svnsync/Project1
 
 5）建立同步脚本 
-  备份完毕后，建立钩子脚本进行同步。在源库/hooks/下建立/修改post-commit脚本，在其中增加一行，内容如下： 
+=========================================================================
+备份完毕后，建立钩子脚本进行同步。在源库/hooks/下建立/修改post-commit脚本，在其中增加一行，内容如下： 
+
 	/usr/bin/svnsync sync  --non-interactive file:///home/backup/svn/svnsync/Project1
 
 你可能已经注意到上面的备份似乎都是本地备份，不是异地备份。实际上，我是通过将远程的备份机mount
+===========================================================================
 （请参阅mount命令）到svn服务器上来实现的，逻辑上看起来是本地备份，物理上实际是异地备份。
 
 
