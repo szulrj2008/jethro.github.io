@@ -247,6 +247,7 @@ perl脚本代码如下：
 =========
 由于是全量备份，所以备份不宜保留太多，只需要保留最近10来天的即可，对于超过15天历史的备份基本可以删除了。 
 在/home/backup/svn/下建立一个perl脚本：`deletDir.pl` 
+
 (注意，删除svn备份库可不像删除普通文件那么简单） 
 脚本代码请参看我的另一个帖子：http://www.scmbbs.com/cn/systp/2007/12/systp6.php 
 
@@ -256,10 +257,16 @@ perl脚本代码如下：
 
 ###3、svnsync备份 
 ----------------------- 
-参阅：http://www.scmbbs.com/cn/svntp/2007/11/svntp4.php 
-使用svnsync备份很简单，步骤如下： 
+参阅：http://www.scmbbs.com/cn/svntp/2007/11/svntp4.php
+=======================================================
+使用svnsync备份很简单，步骤如下：
+==========================================================
 1）在备份机上创建一个空库：svnadmin create Project1
-2）更改该库的钩子脚本pre-revprop-change（因为svnsync要改这个库的属性，也就是要将源库的属性备份到这个库，所以要启用这个脚本）:
+==========================================================
+2）更改该库的钩子脚本'pre-revprop-change'
+================================================================
+（因为svnsync要改这个库的属性，也就是要将源库的属性备份到这个库，所以要启用这个脚本）:
+
   cd SMP/hooks; 
   cp pre-revprop-change.tmpl pre-revprop-change;
   chmod 755 pre-revprop-change;
